@@ -1,0 +1,28 @@
+{
+  "name": "todo-app-odin",
+  "version": "1.0.0",
+  "description": "To-do app project through TOP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwynott/todo-app-odin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mwynott/todo-app-odin/issues"
+  },
+  "homepage": "https://github.com/mwynott/todo-app-odin#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.7",
+    "webpack-cli": "^7.2.1",
+    "webpack-dev-server": "^6.0.0"
+  }
+}
