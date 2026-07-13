@@ -1,5 +1,9 @@
 export class Todo {
     constructor(title, description, dueDate, notes, priority, completed) {
+        this.validateTitle(title);
+        this.validateDescription(description);
+        this.validateDueDate(dueDate);
+
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
