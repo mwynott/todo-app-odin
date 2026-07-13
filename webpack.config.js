@@ -25,4 +25,20 @@ module.exports = {
     open: true,
     hot: true,
   },
+
+   module: {
+    rules: [
+      {
+        test: /\.m?js$/, 
+        exclude: /node_modules/, 
+        type: 'javascript/auto',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      }
+    ]
+  }
 };
