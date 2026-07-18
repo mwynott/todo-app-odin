@@ -1,4 +1,4 @@
-import { TodoList } from "./todolist.js";
+import { TodoList } from "./todoList.js";
 import { seedProjects } from "./seedProjects.js";
 
 const todoList = new TodoList("My Todo List", seedProjects);
