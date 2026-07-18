@@ -5,18 +5,21 @@ export class Project {
     }
 
     addTodo(todo) {
+        if (this.findTodo(todo.title)) {
+            throw new Error(`Todo with title "${todo.title}" already exists in project "${this.name}"!`);
+        }
         this.todos.push(todo);
     }
 
-    removeTodo(todo) {
-        const index = this.todos.indexOf(todo);
+    removeTodo(title) {
+        const index = this.todos.findIndex(todo => todo.title === title);
         if (index > -1) {
             this.todos.splice(index, 1);
         }
     }
 
     findTodo(title) {
-        return this.todos.find(todo => todo.title === title);
+        return this.todos.find(t => t.title.toLowerCase() === title.toLowerCase());
     }
 
     markTodoCompleted(title) {
