@@ -14,4 +14,16 @@ export class Project {
             this.todos.splice(index, 1);
         }
     }
+
+    findTodo(title) {
+        return this.todos.find(todo => todo.title === title);
+    }
+
+    markTodoCompleted(title) {
+        const todo = this.findTodo(title);
+        if (todo) {
+            todo.completed = true;
+        }
+    }
 }
+
