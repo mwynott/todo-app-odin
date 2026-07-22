@@ -4,6 +4,13 @@ import { Project } from "./project.js";
 import { Todo } from "./todo.js";
 import { renderTodoList, renderProject, renderTodo } from "./render.js";
 
+function refresh() {
+    saveTodoList(todoList);
+    const app = document.getElementById("app");
+    app.innerHTML = "";
+    app.append(renderTodoList(todoList, refresh));
+}
+
 function saveTodoList(todoList) {
     localStorage.setItem("todoList", JSON.stringify(todoList));
 }
@@ -20,12 +27,7 @@ function loadTodoList() {
     return new TodoList(rawData.name, projects);
 }
 
-function refresh() {
-    saveTodoList(todoList);
-    const app = document.getElementById("app");
-    app.innerHTML = "";
-    app.append(renderTodoList(todoList));
-}
+
 
 const todoList = loadTodoList();
 
