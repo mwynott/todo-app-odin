@@ -2,13 +2,28 @@ import { TodoList } from "./todoList.js";
 import { seedProjects } from "./seedProjects.js";
 import { Project } from "./project.js";
 import { Todo } from "./todo.js";
-import { renderTodoList } from "./render.js";
+import { renderSearchBar, renderTodoList } from "./render.js";
+
+let searchQuery = "";
 
 function refresh() {
     saveTodoList(todoList);
     const app = document.getElementById("app");
     app.textContent = "";
-    app.append(renderTodoList(todoList, refresh));
+
+    const filteredProjects = todoList.searchProjects(searchQuery);
+    const filteredList = new TodoList(todoList.name, filteredProjects);
+
+    const searchBar = renderSearchBar(searchQuery, query => {
+        searchQuery = query;
+        refresh();
+    });
+
+    app.append(searchBar);
+
+    searchBar.focus();
+    searchBar.setSelectionRange(searchQuery.length, searchQuery.length);
+    app.append(renderTodoList(filteredList, refresh));
 }
 
 function saveTodoList(todoList) {

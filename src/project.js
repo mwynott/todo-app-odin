@@ -28,4 +28,10 @@ export class Project {
             todo.completed = !todo.completed;
         }
     }
+
+    searchTodos(query) {
+        const q = q.trim().toLowerCase();
+        if(!q) return this.todos;
+        return this.todos.filter(t => t.title.toLowerCase().includes(q));
+    }
 }

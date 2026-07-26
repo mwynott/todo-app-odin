@@ -3,30 +3,22 @@
 export function renderTodoList(todoList, refresh) {
     const container = document.createElement("div");
 
-    const searchBar = renderSearchBar();
-    container.append(searchBar);
-
     todoList.projects.forEach(project => {
         container.append(renderProject(project, todoList, refresh))
     });
     return container;
 }
 
-export function renderSearchBar () {
-    const searchCont = document.createElement("div");
-    searchCont.className = "searchCont";
-    
-
+export function renderSearchBar (currentQuery, onSearch) {
     const searchBar = document.createElement("input");
-    searchBar.type = "search";
+
     searchBar.placeholder = "Search projects..."
-    searchCont.append(searchBar);
+    searchBar.value = currentQuery;
+    searchBar.addEventListener("input", () => {
+        onSearch(searchBar.value);
+    })
 
-    const searchBtn = document.createElement("button");
-    searchBtn.innerText = "Search";
-    searchBar.append(searchBtn);
-
-    return searchCont;
+    return searchBar;
 }
 
 export function renderProject(project, todoList, refresh) {

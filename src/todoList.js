@@ -25,4 +25,10 @@ export class TodoList {
     sortProjects() {
         this.projects.sort((a, b) => a.name.localeCompare(b.name));
         }
+
+    searchProjects(query) {
+        const q = query.trim().toLowerCase();
+        if(!q) return this.projects;
+        return this.projects.filter(p => p.name.toLowerCase().includes(q));
+    }
 }
