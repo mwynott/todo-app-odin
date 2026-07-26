@@ -34,4 +34,11 @@ export class Project {
         if(!q) return this.todos;
         return this.todos.filter(t => t.title.toLowerCase().includes(q));
     }
+
+    rename(newName) {
+        if (typeof newName !== "string" || newName.trim() == "") {
+            throw new Error ("Project name cannot be empty!");
+        }
+        this.name = newName;
+    }
 }

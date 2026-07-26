@@ -5,11 +5,18 @@ import { Todo } from "./todo.js";
 import { renderSearchBar, renderTodoList } from "./render.js";
 
 let searchQuery = "";
+let editProjectName = null;
+let editTodo = null; //NOT DONE, DO NEXT!
 
 function refresh() {
     saveTodoList(todoList);
     const app = document.getElementById("app");
     app.textContent = "";
+
+    function onEditProject(name) {
+        editProjectName = name;
+        refresh();
+    }
 
     const filteredProjects = todoList.searchProjects(searchQuery);
     const filteredList = new TodoList(todoList.name, filteredProjects);
@@ -23,7 +30,7 @@ function refresh() {
 
     searchBar.focus();
     searchBar.setSelectionRange(searchQuery.length, searchQuery.length);
-    app.append(renderTodoList(filteredList, refresh));
+    app.append(renderTodoList(filteredList, refresh, editProjectName, onEditProject));
 }
 
 function saveTodoList(todoList) {
@@ -46,4 +53,3 @@ function loadTodoList() {
 
 const todoList = loadTodoList();
 refresh();
-

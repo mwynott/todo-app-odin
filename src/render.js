@@ -1,10 +1,10 @@
 //module that handles rendering of the page
 
-export function renderTodoList(todoList, refresh) {
+export function renderTodoList(todoList, refresh, editProjectName, onEditProject) {
     const container = document.createElement("div");
 
     todoList.projects.forEach(project => {
-        container.append(renderProject(project, todoList, refresh))
+        container.append(renderProject(project, todoList, refresh, editProjectName, onEditProject))
     });
     return container;
 }
@@ -21,11 +21,30 @@ export function renderSearchBar (currentQuery, onSearch) {
     return searchBar;
 }
 
-export function renderProject(project, todoList, refresh) {
+export function renderProject(project, todoList, refresh, editProjectName, onEditProject) {
     const section = document.createElement("section");
-    const heading = document.createElement("h2");
-    heading.textContent = project.name;
-    section.append(heading);
+
+    if (editProjectName === project.name) {
+        //render edit mode for project with save button
+        const input = document.createElement("input");
+        input.value = project.name;
+        const saveBtn = document.createElement("button");
+        saveBtn.textContent = "Save";
+        saveBtn.addEventListener("click", () => {
+            project.rename(input.value);
+            onEditProject(null); //exits edit mode
+            refresh();
+        })
+        section.append(input, saveBtn);
+    } else {
+        //display mode + edit button
+        const heading = document.createElement("h2");
+        heading.textContent = project.name;
+        const editProjectBtn  = document.createElement("button");
+        editProjectBtn.textContent = "Edit";
+        editProjectBtn.addEventListener("click", () => onEditProject(project.name));
+        section.append(heading, editProjectBtn);
+    }
 
     const list = document.createElement("ul");
     project.todos.forEach(todo => {
