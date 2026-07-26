@@ -7,7 +7,7 @@ import { renderTodoList, renderProject, renderTodo } from "./render.js";
 function refresh() {
     saveTodoList(todoList);
     const app = document.getElementById("app");
-    app.innerHTML = "";
+    app.textContent = "";
     app.append(renderTodoList(todoList, refresh));
 }
 
@@ -30,4 +30,5 @@ function loadTodoList() {
 
 
 const todoList = loadTodoList();
+refresh();
 

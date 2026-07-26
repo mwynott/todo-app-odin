@@ -25,7 +25,7 @@ export class Project {
     markTodoCompleted(title) {
         const todo = this.findTodo(title);
         if (todo) {
-            todo.completed = true;
+            todo.completed = !todo.completed;
         }
     }
 }
