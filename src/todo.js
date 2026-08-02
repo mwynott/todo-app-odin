@@ -39,5 +39,10 @@ export class Todo {
             throw new Error("Priority must be either 'low', 'medium', or 'high'!");
         }
     }
+
+    rename(newTitle) {
+        this.validateTitle(newTitle);
+        this.title = newTitle;
+    }
 }
 

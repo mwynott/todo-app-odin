@@ -1,10 +1,10 @@
 //module that handles rendering of the page
 
-export function renderTodoList(todoList, refresh, editProjectName, onEditProject) {
+export function renderTodoList(todoList, refresh, editProjectName, onEditProject, editTodo, onEditTodo) {
     const container = document.createElement("div");
 
     todoList.projects.forEach(project => {
-        container.append(renderProject(project, todoList, refresh, editProjectName, onEditProject))
+        container.append(renderProject(project, todoList, refresh, editProjectName, onEditProject, editTodo, onEditTodo))
     });
     return container;
 }
@@ -21,7 +21,7 @@ export function renderSearchBar (currentQuery, onSearch) {
     return searchBar;
 }
 
-export function renderProject(project, todoList, refresh, editProjectName, onEditProject) {
+export function renderProject(project, todoList, refresh, editProjectName, onEditProject, editTodo, onEditTodo) {
     const section = document.createElement("section");
 
     if (editProjectName === project.name) {
@@ -43,21 +43,61 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
         const editProjectBtn  = document.createElement("button");
         editProjectBtn.textContent = "Edit";
         editProjectBtn.addEventListener("click", () => onEditProject(project.name));
-        section.append(heading, editProjectBtn);
+        const removeProjectBtn = document.createElement("button");
+        removeProjectBtn.textContent = "Remove";
+        removeProjectBtn.addEventListener("click", () => {
+            if (window.confirm(`Are you sure you want to remove the project "${project.name}"?`)) {
+                todoList.removeProject(project.name);
+                refresh();
+            }
+        });
+        section.append(heading, editProjectBtn, removeProjectBtn);
     }
 
     const list = document.createElement("ul");
     project.todos.forEach(todo => {
-        list.append(renderTodo(todo, project, todoList, refresh))
+        list.append(renderTodo(todo, project, todoList, refresh, editTodo, onEditTodo));
     });
     section.append(list);
 
     return section;
 }
 
-export function renderTodo(todo, project, todoList, refresh) {
+export function renderTodo(todo, project, todoList, refresh, editTodo, onEditTodo) {
     const li = document.createElement("li");
-    li.textContent = `${todo.title} (${todo.priority})`;
+
+    //Edit mode for todo with save button
+    if (editTodo === todo.title) {
+        const input = document.createElement("input");
+        input.value = todo.title;
+        const saveBtn = document.createElement("button");
+        saveBtn.textContent = "Save";
+        saveBtn.addEventListener("click", () => {
+            todo.rename(input.value);
+            onEditTodo(null); //exits edit mode
+            refresh();
+        })
+        li.append(input, saveBtn);
+    } else {
+        //display mode + edit button
+        const heading = document.createElement("h3");
+        heading.textContent = todo.title;
+
+        const editTodoBtn = document.createElement("button");
+        editTodoBtn.textContent = "Edit";
+        editTodoBtn.addEventListener("click", () => onEditTodo(todo.title));
+
+        const removeTodoBtn = document.createElement("button");
+        removeTodoBtn.textContent = "Remove";
+        removeTodoBtn.addEventListener("click", () => {
+            if (window.confirm(`Are you sure you want to remove the todo "${todo.title}"?`)) {
+                project.removeTodo(todo.title);
+                refresh();
+            }
+        });
+
+        li.append(heading, editTodoBtn, removeTodoBtn);
+    }
 
     const completeBtn = document.createElement("button");
     completeBtn.textContent = todo.completed ? "Completed!" : "Complete";

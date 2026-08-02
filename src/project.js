@@ -30,7 +30,7 @@ export class Project {
     }
 
     searchTodos(query) {
-        const q = q.trim().toLowerCase();
+        const q = query.trim().toLowerCase();
         if(!q) return this.todos;
         return this.todos.filter(t => t.title.toLowerCase().includes(q));
     }
