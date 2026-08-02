@@ -18,8 +18,8 @@ function refresh() {
         refresh();
     }
 
-    function onEditTodo(title) {
-        editTodo = title;
+    function onEditTodo(id) {
+        editTodo = id;
         refresh();
     }
 
@@ -48,7 +48,7 @@ function loadTodoList() {
 
     const projects = rawData.projects.map(p =>
         new Project(p.name, p.todos.map(t =>
-            new Todo(t.title, t.description, t.dueDate, t.notes, t.priority, t.completed)
+            new Todo(t.title, t.description, t.dueDate, t.notes, t.priority, t.completed, t.id)
         ))
     );
     return new TodoList(rawData.name, projects);

@@ -40,9 +40,11 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
         //display mode + edit button
         const heading = document.createElement("h2");
         heading.textContent = project.name;
+
         const editProjectBtn  = document.createElement("button");
         editProjectBtn.textContent = "Edit";
         editProjectBtn.addEventListener("click", () => onEditProject(project.name));
+
         const removeProjectBtn = document.createElement("button");
         removeProjectBtn.textContent = "Remove";
         removeProjectBtn.addEventListener("click", () => {
@@ -51,6 +53,7 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
                 refresh();
             }
         });
+        
         section.append(heading, editProjectBtn, removeProjectBtn);
     }
 
@@ -67,25 +70,57 @@ export function renderTodo(todo, project, todoList, refresh, editTodo, onEditTod
     const li = document.createElement("li");
 
     //Edit mode for todo with save button
-    if (editTodo === todo.title) {
-        const input = document.createElement("input");
-        input.value = todo.title;
+    if (editTodo === todo.id) {
+        const titleInput = document.createElement("input");
+        titleInput.value = todo.title;
+        titleInput.placeholder = "Title";
+
+        const descriptionInput = document.createElement("input");
+        descriptionInput.value = todo.description;
+        descriptionInput.placeholder = "Description";
+
+        const dueDateInput = document.createElement("input");
+        dueDateInput.value = todo.dueDate;
+        dueDateInput.placeholder = "Due Date";
+
+        const notesInput = document.createElement("input");
+        notesInput.value = todo.notes;
+        notesInput.placeholder = "Notes";
+
+        const priorityInput = document.createElement("select");
+        ["low", "medium", "high"].forEach(priority => {
+            const option = document.createElement("option");
+            option.value = priority;
+            option.textContent = priority.charAt(0).toUpperCase() + priority.slice(1);
+            if (priority === todo.priority) {
+                option.selected = true;
+            }
+            priorityInput.append(option);
+        });
+
         const saveBtn = document.createElement("button");
         saveBtn.textContent = "Save";
         saveBtn.addEventListener("click", () => {
-            todo.rename(input.value);
+            todo.update({
+                title: titleInput.value,
+                description: descriptionInput.value,
+                dueDate: dueDateInput.value,
+                notes: notesInput.value,
+                priority: priorityInput.value
+            });
             onEditTodo(null); //exits edit mode
             refresh();
-        })
-        li.append(input, saveBtn);
-    } else {
+        });
+        
+        li.append(titleInput, descriptionInput, dueDateInput, notesInput, priorityInput, saveBtn);
+            } else {
         //display mode + edit button
         const heading = document.createElement("h3");
         heading.textContent = todo.title;
 
         const editTodoBtn = document.createElement("button");
         editTodoBtn.textContent = "Edit";
-        editTodoBtn.addEventListener("click", () => onEditTodo(todo.title));
+        editTodoBtn.addEventListener("click", () => onEditTodo(todo.id));
 
         const removeTodoBtn = document.createElement("button");
         removeTodoBtn.textContent = "Remove";

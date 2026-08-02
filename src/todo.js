@@ -1,10 +1,11 @@
 export class Todo {
-    constructor(title, description, dueDate, notes, priority, completed = false) {
+    constructor(title, description, dueDate, notes, priority, completed = false, id = crypto.randomUUID()) {
         this.validateTitle(title);
         this.validateDescription(description);
         this.validateDueDate(dueDate);
         this.validatePriority(priority);
 
+        this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -44,5 +45,12 @@ export class Todo {
         this.validateTitle(newTitle);
         this.title = newTitle;
     }
-}
 
+    update({ title, description, dueDate, notes, priority } = {}) {
+        if (title !== undefined) { this.validateTitle(title); this.title = title; }
+        if (description !== undefined) { this.description = description; }
+        if (dueDate !== undefined) { this.validateDueDate(dueDate); this.dueDate = dueDate; }
+        if (notes !== undefined) { this.notes = notes; }
+        if (priority !== undefined) { this.validatePriority(priority); this.priority = priority; }
+    }
+}

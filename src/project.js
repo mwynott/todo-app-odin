@@ -11,8 +11,8 @@ export class Project {
         this.todos.push(todo);
     }
 
-    removeTodo(title) {
-        const index = this.todos.findIndex(todo => todo.title === title);
+    removeTodo(id) {
+        const index = this.todos.findIndex(todo => todo.id === id);
         if (index > -1) {
             this.todos.splice(index, 1);
         }
@@ -22,8 +22,8 @@ export class Project {
         return this.todos.find(t => t.title.toLowerCase() === title.toLowerCase());
     }
 
-    markTodoCompleted(title) {
-        const todo = this.findTodo(title);
+    markTodoCompleted(id) {
+        const todo = this.findTodoById(id);
         if (todo) {
             todo.completed = !todo.completed;
         }
