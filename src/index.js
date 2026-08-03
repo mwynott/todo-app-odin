@@ -6,7 +6,9 @@ import { renderSearchBar, renderTodoList, renderTodo } from "./render.js";
 
 let searchQuery = "";
 let editProjectName = null;
-let editTodo = null; //NOT DONE, DO NEXT!
+let editTodo = null; 
+let isAddingProject = false;
+let addingTodoToProject = null; 
 
 function refresh() {
     saveTodoList(todoList);
@@ -23,6 +25,49 @@ function refresh() {
         refresh();
     }
 
+    function onStartAddProject() {
+        isAddingProject = true;
+        refresh();
+    }
+
+    function onStartAddTodo(projectName) {
+        addingTodoToProject = projectName;
+        refresh();
+    }
+
+function onAddProject(name) {
+    if (name === null) {
+        isAddingProject = false; //no input, cancel adding project
+        refresh();
+        return;
+    } 
+    try {
+        todoList.addProject(new Project(name));
+        isAddingProject = false;
+        refresh();
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+function onAddTodo(projectName, todoData) {
+    if (todoData === null) {
+        addingTodoToProject = null; //no input, cancel adding todo
+        refresh();
+        return;
+    }
+    try {
+        const project = todoList.findProject(projectName);
+        project.addTodo(new Todo(todoData.title, todoData.description,
+            todoData.dueDate, todoData.notes, todoData.priority
+            ));
+        addingTodoToProject = null;
+        refresh();
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
     const filteredProjects = todoList.searchProjects(searchQuery);
     const filteredList = new TodoList(todoList.name, filteredProjects);
 
@@ -35,7 +80,8 @@ function refresh() {
 
     searchBar.focus();
     searchBar.setSelectionRange(searchQuery.length, searchQuery.length);
-    app.append(renderTodoList(filteredList, refresh, editProjectName, onEditProject, editTodo, onEditTodo));
+    app.append(renderTodoList(filteredList, refresh, editProjectName, onEditProject, editTodo,
+         onEditTodo, isAddingProject, onStartAddProject, onAddProject, addingTodoToProject, onStartAddTodo, onAddTodo));
 }
 
 function saveTodoList(todoList) {

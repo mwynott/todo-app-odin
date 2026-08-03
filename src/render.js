@@ -1,11 +1,30 @@
 //module that handles rendering of the page
 
-export function renderTodoList(todoList, refresh, editProjectName, onEditProject, editTodo, onEditTodo) {
+export function renderTodoList(todoList, refresh, editProjectName, onEditProject, editTodo, 
+    onEditTodo, isAddingProject, onStartAddProject, onAddProject, addingTodoToProject, onStartAddTodo, onAddTodo) {
     const container = document.createElement("div");
 
     todoList.projects.forEach(project => {
-        container.append(renderProject(project, todoList, refresh, editProjectName, onEditProject, editTodo, onEditTodo))
+        container.append(renderProject(project, todoList, refresh, editProjectName, onEditProject,
+             editTodo, onEditTodo, addingTodoToProject, onStartAddTodo, onAddTodo));
     });
+
+    if (isAddingProject) {
+        const input = document.createElement("input");
+        input.placeholder = "Add new project...";
+        const saveBtn = document.createElement("button");
+        saveBtn.textContent = "Save";
+        saveBtn.addEventListener("click", () => onAddProject(input.value));
+        const cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.addEventListener("click", () => onAddProject(null));
+        container.append(input, saveBtn, cancelBtn);
+    } else {
+        const addProjectBtn = document.createElement("button");
+        addProjectBtn.textContent = "New Project";
+        addProjectBtn.addEventListener("click", onStartAddProject);
+        container.append(addProjectBtn);
+    }
     return container;
 }
 
@@ -21,8 +40,55 @@ export function renderSearchBar (currentQuery, onSearch) {
     return searchBar;
 }
 
-export function renderProject(project, todoList, refresh, editProjectName, onEditProject, editTodo, onEditTodo) {
+export function renderProject(project, todoList, refresh, editProjectName, onEditProject,
+     editTodo, onEditTodo, addingTodoToProject, onStartAddTodo, onAddTodo) {
     const section = document.createElement("section");
+
+    if (addingTodoToProject === project.name) {
+        const titleInput = document.createElement("input");
+        titleInput.placeholder = "Todo Title";
+
+        const descriptionInput = document.createElement("input");
+        descriptionInput.placeholder = "Todo Description";
+
+        const dueDateInput = document.createElement("input");
+        dueDateInput.type = "date";
+        dueDateInput.placeholder = "Due Date";
+
+        const notesInput = document.createElement("input");
+        notesInput.placeholder = "Notes";
+
+        const priorityInput = document.createElement("select");
+        ["low", "medium", "high"].forEach(priority => {
+            const option = document.createElement("option");
+            option.value = priority;
+            option.textContent = priority.charAt(0).toUpperCase() + priority.slice(1);
+            priorityInput.append(option);
+        });
+
+        const saveBtn = document.createElement("button");
+        saveBtn.textContent = "Save";
+        saveBtn.addEventListener("click", () => {
+            onAddTodo(project.name, {
+                title: titleInput.value,
+                description: descriptionInput.value,
+                dueDate: dueDateInput.value,
+                notes: notesInput.value,
+                priority: priorityInput.value
+            });
+        });
+
+        const cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.addEventListener("click", () => onAddTodo(project.name, null));
+
+        section.append(titleInput, descriptionInput, dueDateInput, notesInput, priorityInput, saveBtn, cancelBtn);
+    } else {
+        const addTodoBtn = document.createElement("button");
+        addTodoBtn.textContent = "Add Todo";
+        addTodoBtn.addEventListener("click", () => onStartAddTodo(project.name));
+        section.append(addTodoBtn);
+    }
 
     if (editProjectName === project.name) {
         //render edit mode for project with save button
@@ -64,8 +130,8 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
     section.append(list);
 
     return section;
-}
-
+    }
+     
 export function renderTodo(todo, project, todoList, refresh, editTodo, onEditTodo) {
     const li = document.createElement("li");
 
@@ -116,7 +182,7 @@ export function renderTodo(todo, project, todoList, refresh, editTodo, onEditTod
             } else {
         //display mode + edit button
         const heading = document.createElement("h3");
-        heading.textContent = todo.title;
+        heading.textContent = `${todo.title} (${todo.priority})`;
 
         const editTodoBtn = document.createElement("button");
         editTodoBtn.textContent = "Edit";
@@ -126,7 +192,7 @@ export function renderTodo(todo, project, todoList, refresh, editTodo, onEditTod
         removeTodoBtn.textContent = "Remove";
         removeTodoBtn.addEventListener("click", () => {
             if (window.confirm(`Are you sure you want to remove the todo "${todo.title}"?`)) {
-                project.removeTodo(todo.title);
+                project.removeTodo(todo.id);
                 refresh();
             }
         });
@@ -137,7 +203,7 @@ export function renderTodo(todo, project, todoList, refresh, editTodo, onEditTod
     const completeBtn = document.createElement("button");
     completeBtn.textContent = todo.completed ? "Completed!" : "Complete";
         completeBtn.addEventListener("click", () => {
-            project.markTodoCompleted(todo.title);
+            project.markTodoCompleted(todo.id);
             refresh(); //re-render after changes are made
     });
         

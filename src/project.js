@@ -22,6 +22,10 @@ export class Project {
         return this.todos.find(t => t.title.toLowerCase() === title.toLowerCase());
     }
 
+    findTodoById(id) {
+        return this.todos.find(t => t.id === id);
+    }
+
     markTodoCompleted(id) {
         const todo = this.findTodoById(id);
         if (todo) {
