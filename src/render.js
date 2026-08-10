@@ -4,6 +4,11 @@ export function renderTodoList(todoList, refresh, editProjectName, onEditProject
     onEditTodo, isAddingProject, onStartAddProject, onAddProject, addingTodoToProject, onStartAddTodo, onAddTodo) {
     const container = document.createElement("div");
 
+    const heading = document.createElement("h1");
+    heading.id = "heading";
+    heading.textContent = "Todo List";
+    container.prepend(heading);
+
     todoList.projects.forEach(project => {
         container.append(renderProject(project, todoList, refresh, editProjectName, onEditProject,
              editTodo, onEditTodo, addingTodoToProject, onStartAddTodo, onAddTodo));
@@ -22,6 +27,7 @@ export function renderTodoList(todoList, refresh, editProjectName, onEditProject
     } else {
         const addProjectBtn = document.createElement("button");
         addProjectBtn.textContent = "New Project";
+        addProjectBtn.id = "addProjectBtn";
         addProjectBtn.addEventListener("click", onStartAddProject);
         container.append(addProjectBtn);
     }
@@ -30,7 +36,7 @@ export function renderTodoList(todoList, refresh, editProjectName, onEditProject
 
 export function renderSearchBar (currentQuery, onSearch) {
     const searchBar = document.createElement("input");
-
+    searchBar.id = "search";
     searchBar.placeholder = "Search projects..."
     searchBar.value = currentQuery;
     searchBar.addEventListener("input", () => {
@@ -86,6 +92,7 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
     } else {
         const addTodoBtn = document.createElement("button");
         addTodoBtn.textContent = "Add Todo";
+        addTodoBtn.id = "addTodo";
         addTodoBtn.addEventListener("click", () => onStartAddTodo(project.name));
         section.append(addTodoBtn);
     }
@@ -106,13 +113,15 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
         //display mode + edit button
         const heading = document.createElement("h2");
         heading.textContent = project.name;
-
+        
         const editProjectBtn  = document.createElement("button");
         editProjectBtn.textContent = "Edit";
+        editProjectBtn.id = "editBtn";
         editProjectBtn.addEventListener("click", () => onEditProject(project.name));
 
         const removeProjectBtn = document.createElement("button");
         removeProjectBtn.textContent = "Remove";
+        removeProjectBtn.id = "removeBtn";
         removeProjectBtn.addEventListener("click", () => {
             if (window.confirm(`Are you sure you want to remove the project "${project.name}"?`)) {
                 todoList.removeProject(project.name);
@@ -128,7 +137,6 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
         list.append(renderTodo(todo, project, todoList, refresh, editTodo, onEditTodo));
     });
     section.append(list);
-
     return section;
     }
      
