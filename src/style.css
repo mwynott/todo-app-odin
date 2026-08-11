@@ -1,0 +1,149 @@
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+*:not(dialog) {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Increase line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
+}
+
+/*Style for todo Project*/
+
+#app {
+  display: grid;
+  max-width: auto;
+  height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 4fr;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #b947aa, #000);
+}
+
+#search {
+  max-width: 50%;
+  width: 50vw;
+  height: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  justify-self: center;
+  grid-row: 1 / 2;
+}
+
+#heading {
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    max-width: 100%;
+    max-height: 30%;
+    height: auto;
+    width: auto;
+}
+
+section {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr .25fr .25fr .25fr 1fr;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 50%;
+}
+
+section h2 {
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+    grid-column: 3 / 4;
+    grid-row: 1;
+    font-size: 1.5rem;
+    max-width: 100%;
+    max-height: 30%;
+    height: auto;
+    width: auto;
+}
+
+section ul {
+    grid-column: 3 / 4;
+    grid-row: 2;
+    list-style-type: none;
+}
+
+section button {
+    grid-row: 3;
+}
+
+#app > div {
+}
+
+#addTodo {
+    color: blue;
+    grid-column: 2 / 3;
+}
+
+#editBtn {
+    color: red; 
+    grid-column: 3 / 4;
+}
+
+#removeBtn {
+    color: green;
+    grid-column: 4 / 5;
+}
+
+#addProjectBtn {
+    
+}

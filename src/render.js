@@ -50,6 +50,9 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
      editTodo, onEditTodo, addingTodoToProject, onStartAddTodo, onAddTodo) {
     const section = document.createElement("section");
 
+    const btnContainer = document.createElement("div");
+    btnContainer.id = "btnContainer";
+
     if (addingTodoToProject === project.name) {
         const titleInput = document.createElement("input");
         titleInput.placeholder = "Todo Title";
@@ -94,7 +97,7 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
         addTodoBtn.textContent = "Add Todo";
         addTodoBtn.id = "addTodo";
         addTodoBtn.addEventListener("click", () => onStartAddTodo(project.name));
-        section.append(addTodoBtn);
+        btnContainer.append(addTodoBtn);
     }
 
     if (editProjectName === project.name) {
@@ -129,14 +132,18 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
             }
         });
         
-        section.append(heading, editProjectBtn, removeProjectBtn);
+        section.append(heading);
+        btnContainer.append(editProjectBtn, removeProjectBtn);
     }
 
     const list = document.createElement("ul");
     project.todos.forEach(todo => {
         list.append(renderTodo(todo, project, todoList, refresh, editTodo, onEditTodo));
     });
-    section.append(list);
+    
+    
+    section.append(list, btnContainer);
+
     return section;
     }
      
