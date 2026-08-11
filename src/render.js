@@ -94,9 +94,12 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
         section.append(titleInput, descriptionInput, dueDateInput, notesInput, priorityInput, saveBtn, cancelBtn);
     } else {
         const addTodoBtn = document.createElement("button");
-        addTodoBtn.textContent = "Add Todo";
+        addTodoBtn.textContent = "";
         addTodoBtn.id = "addTodo";
         addTodoBtn.addEventListener("click", () => onStartAddTodo(project.name));
+        addTodoBtn.addEventListener("mouseenter", () => {
+            addTodoBtn.title = "Add new todo";
+        });
         btnContainer.append(addTodoBtn);
     }
 
@@ -118,13 +121,19 @@ export function renderProject(project, todoList, refresh, editProjectName, onEdi
         heading.textContent = project.name;
         
         const editProjectBtn  = document.createElement("button");
-        editProjectBtn.textContent = "Edit";
+        editProjectBtn.textContent = "";
         editProjectBtn.id = "editBtn";
         editProjectBtn.addEventListener("click", () => onEditProject(project.name));
+        editProjectBtn.addEventListener("mouseenter", () => {
+            editProjectBtn.title = "Edit project name";
+        });
 
         const removeProjectBtn = document.createElement("button");
-        removeProjectBtn.textContent = "Remove";
+        removeProjectBtn.textContent = "";
         removeProjectBtn.id = "removeBtn";
+        removeProjectBtn.addEventListener("mouseenter", () => {
+            removeProjectBtn.title = "Remove entire project from list";
+        });
         removeProjectBtn.addEventListener("click", () => {
             if (window.confirm(`Are you sure you want to remove the project "${project.name}"?`)) {
                 todoList.removeProject(project.name);
