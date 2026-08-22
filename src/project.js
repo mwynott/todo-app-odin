@@ -30,6 +30,7 @@ export class Project {
         const todo = this.findTodoById(id);
         if (todo) {
             todo.completed = !todo.completed;
+            return todo.completed;
         }
     }
 

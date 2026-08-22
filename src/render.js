@@ -26,8 +26,9 @@ export function renderTodoList(todoList, refresh, editProjectName, onEditProject
         container.append(input, saveBtn, cancelBtn);
     } else {
         const addProjectBtn = document.createElement("button");
-        addProjectBtn.textContent = "New Project";
+        addProjectBtn.textContent = "";
         addProjectBtn.id = "addProjectBtn";
+        addProjectBtn.title = "Start new project";
         addProjectBtn.addEventListener("click", onStartAddProject);
         container.append(addProjectBtn);
     }
@@ -209,11 +210,15 @@ export function renderTodo(todo, project, todoList, refresh, editTodo, onEditTod
         heading.textContent = `${todo.title} (${todo.priority})`;
 
         const editTodoBtn = document.createElement("button");
-        editTodoBtn.textContent = "Edit";
+        editTodoBtn.id = "editTodoBtn";
+        editTodoBtn.title = "Edit todo";
+        editTodoBtn.textContent = "";
         editTodoBtn.addEventListener("click", () => onEditTodo(todo.id));
 
         const removeTodoBtn = document.createElement("button");
-        removeTodoBtn.textContent = "Remove";
+        removeTodoBtn.id = "removeTodoBtn";
+        removeTodoBtn.title = "Remove todo";
+        removeTodoBtn.textContent = "";
         removeTodoBtn.addEventListener("click", () => {
             if (window.confirm(`Are you sure you want to remove the todo "${todo.title}"?`)) {
                 project.removeTodo(todo.id);
@@ -225,9 +230,13 @@ export function renderTodo(todo, project, todoList, refresh, editTodo, onEditTod
     }
 
     const completeBtn = document.createElement("button");
-    completeBtn.textContent = todo.completed ? "Completed!" : "Complete";
-        completeBtn.addEventListener("click", () => {
-            project.markTodoCompleted(todo.id);
+    completeBtn.id = "completeTodoBtn";
+    completeBtn.title = "Complete todo";
+    completeBtn.classList.toggle("completed", todo.completed);
+    
+        completeBtn.addEventListener("click", () => {  
+            const completed = project.markTodoCompleted(todo.id);
+            completeBtn.classList.toggle("completed", completed);
             refresh(); //re-render after changes are made
     });
         
